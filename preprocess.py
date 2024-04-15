@@ -28,7 +28,7 @@ def load_text(origText, subjectIDs, hospitalIDs, text_names, condition_names):
 		texts[i] = origText.loc[i,text_names]
 		condi = []
 		for c in condition_names:
-			# for example: alcohol, ith patient contidion of alcohol result
+			# for example: alcohol, ith patient contidion of alcohol result; row is the number of patients; colum is the conditions
 			condi.append(origText.loc[i, c])
 		conditions[i] = condi
 	return texts, conditions, subject_ids, hadm_ids
@@ -73,13 +73,17 @@ def main():
 	train_cond = [conditions[key] for key in train_keys]
 	val_cond = [conditions[key] for key in val_keys]
 	test_cond = [conditions[key] for key in test_keys]
+	print("train_texts size: {}".format(len(train_texts)))
+
 
 
 	with open(args.output_file, "wb") as f:
 		train_tar = np.array(train_cond)
 		val_tar = np.array(val_cond)
 		test_tar = np.array(test_cond)
-		all = [train_texts, test_tar, val_tests, val_tar, test_texts, test_tar]
+		print("train_cond size: {}".format(len(train_tar[:,0])))
+
+		all = [train_texts, train_tar, val_tests, val_tar, test_texts, test_tar]
 		pickle.dump(all,f)
 
 
